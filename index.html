@@ -1,635 +1,542 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Chosen Palette: aufentec Custom (Dark Blue & Orange) -->
+    <!-- Application Structure Plan: The SPA uses a single-page, vertical scroll layout with a fixed navigation header for intuitive, linear storytelling. Key sections are: 1) A dynamic Hero with a video background for a strong first impression. 2) A 'Nosotros' section with a grid for scannable value propositions. 3) The core 'Soluciones' section, designed as an interactive tabbed interface where users click a brand logo to reveal detailed information, preventing overwhelming scrolling and allowing focused exploration. 4) A 'Sectores' section using a card-based grid for visual clarity. 5) A final 'Contacto' section. This structure was chosen to guide the user from brand introduction to detailed solutions and finally to a call-to-action, with the tabbed interface being the key to making the dense product information manageable and engaging. -->
+    <!-- Visualization & Content Choices: - **Hero:** Video background (HTML <video>) to convey a modern, dynamic feel. - **Value Proposition & Sectors:** Card grids with icons (HTML/CSS/Font Awesome) to visually break down lists into digestible, scannable blocks. - **Solutions/Brands:** An interactive tabbed system (Vanilla JS DOM manipulation). When a user clicks a brand logo to reveal the corresponding content `div` is displayed while others are hidden. This is the optimal method for presenting a large catalog of distinct partners without a long, unusable page, promoting user interaction and discovery. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuFentec | Innovación que avanza contigo</title>
-    <!-- Tailwind CSS CDN -->
+    <title>aufentec | Innovación que avanza contigo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Public Sans', sans-serif;
             scroll-behavior: smooth;
-            background-color: #ffffff; /* Changed from gray-50 to white */
-        }
-        .section-padding {
-            padding: 80px 0; /* Consistent vertical padding for sections */
         }
         .nav-link {
             transition: color 0.3s ease;
         }
-        /* Orange hover for navigation links */
         .nav-link:hover {
             color: #f18d29;
         }
-        /* Custom Tailwind colors */
         .bg-primary-dark { background-color: #152c47; }
         .text-primary-dark { color: #152c47; }
         .bg-accent-orange { background-color: #f18d29; }
         .text-accent-orange { color: #f18d29; }
-        .bg-shadow-grayish-blue { background-color: #597482; }
-        .text-shadow-grayish-blue { color: #597482; }
+        .border-accent-orange { border-color: #f18d29; }
         .hover\:bg-light-orange:hover { background-color: #FDBE87; }
         .focus\:ring-accent-orange:focus { ring-color: #f18d29; }
+        .brand-tab {
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            cursor: pointer;
+            height: 48px; /* Base height for uniformity on mobile */
+            width: auto; /* Maintain aspect ratio */
+            object-fit: contain; /* Ensure image fits within bounds */
+        }
+        .brand-tab:hover {
+            filter: grayscale(50%);
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+        .brand-tab.active {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+            border-color: #f18d29;
+        }
+        /* Responsive adjustments for brand tabs */
+        @media (min-width: 768px) {
+            .brand-tab {
+                height: 64px; /* Larger height on desktop */
+            }
+        }
 
-        /* Ensure logo is responsive within header and footer */
+        /* Asegura que el logo del encabezado sea más grande */
         .header-logo {
-            max-height: 50px; /* Adjust as needed */
+            height: 96px; /* Aumentado 3 veces (original h-12 = 48px) */
             width: auto;
         }
+        /* Asegura que el logo del pie de página sea más grande */
         .footer-logo {
-            max-height: 60px; /* Increased for more prominence in footer */
+            max-height: 180px; /* Aumentado 3 veces (original max-height: 60px) */
             width: auto;
-        }
-        /* Ensure content images are responsive and fill their container */
-        .content-image {
-            width: 100%; /* Make images take full width of their parent container */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: cover; /* Cover the area without distortion */
         }
     </style>
 </head>
-<body class="text-gray-800"> <!-- Body background is now white via style tag -->
-    <!-- Header -->
+<body class="bg-white text-gray-800">
+
+    <!-- Encabezado -->
     <header class="bg-white shadow-md fixed w-full z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- Logo -->
-            <a href="#home" class="flex items-center space-x-2">
-                <img src="https://i.ibb.co/Mxv2wZ8W/Aufentec-Logotipo-H-Color.png" alt="Aufentec-Logotipo-H-Color" class="header-logo">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home">
+                <img src="https://www.dropbox.com/scl/fi/ej8cvkc1rba3edkfsm4g1/Aufentec_Logotipo_Color_2.png?rlkey=tbfnlstmtcr8vx9hanyuau3x0&st=le32wt87&dl=1" alt="aufentec logo" class="header-logo">
             </a>
-            <!-- Navigation Menu -->
-            <ul class="hidden md:flex space-x-8">
-                <li><a href="#home" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange">Inicio</a></li>
-                <li><a href="#about" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange">NOSOTROS</a></li>
-                <li><a href="#solutions" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange">Soluciones</a></li>
-                <li><a href="#sectors" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange">Sectores</a></li>
-                <li><a href="#contact" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange">Contacto</a></li>
-            </ul>
-            <!-- Mobile Menu Button -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-gray-700 font-semibold">Nosotros</a>
+                <a href="#solutions" class="nav-link text-gray-700 font-semibold">Soluciones</a>
+                <a href="#sectors" class="nav-link text-gray-700 font-semibold">Sectores</a>
+                <a href="#contact" class="nav-link text-gray-700 font-semibold">Contacto</a>
+            </div>
             <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-gray-700 focus:outline-none hover:text-accent-orange focus:text-accent-orange">
+                <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
         </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 shadow-lg">
-            <ul class="flex flex-col items-center space-y-4">
-                <li><a href="#home" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange py-2 block">Inicio</a></li>
-                <li><a href="#about" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange py-2 block">NOSOTROS</a></li>
-                <li><a href="#solutions" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange py-2 block">Soluciones</a></li>
-                <li><a href="#sectors" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange py-2 block">Sectores</a></li>
-                <li><a href="#contact" class="nav-link text-gray-700 font-semibold text-lg hover:text-accent-orange py-2 block">Contacto</a></li>
-            </ul>
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2">
+            <a href="#about" class="block text-center py-2 text-gray-700 font-semibold">Nosotros</a>
+            <a href="#solutions" class="block text-center py-2 text-gray-700 font-semibold">Soluciones</a>
+            <a href="#sectors" class="block text-center py-2 text-gray-700 font-semibold">Sectores</a>
+            <a href="#contact" class="block text-center py-2 text-gray-700 font-semibold">Contacto</a>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative bg-gradient-to-r from-primary-dark to-shadow-grayish-blue text-white flex items-center justify-center min-h-screen py-20 px-6">
-        <div class="container mx-auto text-center z-10">
-            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6">Automatiza | Produce | Evoluciona</h1>
-            <p class="text-xl md:text-2xl mb-8 opacity-90">Innovación que avanza contigo</p>
-            <a href="#solutions" class="bg-accent-orange text-white hover:bg-light-orange font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-                Descubre Nuestras Soluciones
-            </a>
-        </div>
-        <!-- Background Overlay for subtle effect -->
-        <div class="absolute inset-0 bg-black opacity-30"></div>
-    </section>
-
-    <!-- About Us Section -->
-    <section id="about" class="section-padding bg-white"> <!-- Background is now white -->
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center text-primary-dark mb-12">NOSOTROS</h2>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6 text-lg text-gray-700">
-                    <!-- Paragraph 3 (original) -->
-                    <p>Integramos hardware, software y asesoría técnica en una sola oferta, con soporte local y enfoque en el retorno de inversión.</p>
-                    <!-- Paragraph 1 (original) -->
-                    <p>Somos una empresa mexicana con base y atención en el Bajío, especializada en soluciones de automatización, control y eficiencia energética para la industria.</p>
-                    <!-- Paragraph 2 (original) -->
-                    <p>En AuFentec entendemos lo que sucede en piso de planta: tiempos críticos, exigencias de producción y necesidad de resultados reales. Por eso diseñamos e implementamos soluciones hechas a la medida, usando tecnología de vanguardia y marcas líderes a nivel mundial.</p>
-                    <p class="text-accent-orange font-bold text-xl mt-8">Automatiza mejor | Produce más | Evoluciona con nosotros</p>
-                </div>
-                <div>
-                    <img src="https://placehold.co/800x500/edf2f7/4a5568?text=Nuestra+Filosofía" alt="Nuestra Filosofía" class="rounded-xl shadow-lg content-image">
-                </div>
+    <main>
+        <!-- Sección Hero -->
+        <section id="home" class="relative flex items-center justify-center h-screen bg-primary-dark text-white">
+            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+                <source src="https://www.dropbox.com/scl/fi/xr8hj5nevz1hpkut7sfzd/1-Video_Industrial_Tiempos_Cr-ticos.mp4?rlkey=lbbkszl94rd3ptx9ad924uhpw&st=mwuxg5ud&dl=1" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+            <div class="text-center z-10 px-4">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Automatiza | Produce | Evoluciona</h1>
+                <p class="text-xl md:text-2xl opacity-90">Innovación que avanza contigo</p>
             </div>
+        </section>
 
-            <h3 class="text-3xl font-bold text-center text-primary-dark mt-20 mb-10">Propuesta de valor - ¿Qué nos hace diferentes?</h3>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-md flex items-start space-x-4">
-                    <i class="fas fa-microchip text-accent-orange text-3xl"></i>
+        <!-- Sección Nosotros -->
+        <section id="about" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-primary-dark mb-12">Nosotros</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                    <div class="text-lg text-gray-600 space-y-4">
+                        <p>Somos una empresa mexicana con base y atención en el Bajío, especializada en soluciones de automatización, control y eficiencia energética para la industria.</p>
+                        <p>En <b>aufentec</b> entendemos lo que sucede en piso de planta: tiempos críticos, exigencias de producción y necesidad de resultados reales. Por eso diseñamos e implementamos soluciones hechas a la medida, usando tecnología de vanguardia y marcas líderes a nivel mundial.</p>
+                        <p>Integramos hardware, software y asesoría técnica en una sola oferta, con soporte local y enfoque en el retorno de inversión.</p>
+                    </div>
                     <div>
-                        <h4 class="text-xl font-semibold mb-2">Experiencia Integral</h4>
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2832&auto=format&fit=crop" alt="Equipo de aufentec" class="rounded-lg shadow-xl">
+                    </div>
+                </div>
+                <h3 class="text-3xl font-bold text-center text-primary-dark mt-20 mb-10">Propuesta de valor - ¿Qué nos hace diferentes?</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-microchip text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-dark">Experiencia Integral</h4>
                         <p class="text-gray-600">Expertos en visión artificial, robótica, automatización, conexión, sensórica industrial, control y visualización.</p>
                     </div>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md flex items-start space-x-4">
-                    <i class="fas fa-lightbulb text-accent-orange text-3xl"></i>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Dominio Técnico Inteligente</h4>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-lightbulb text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-dark">Dominio Técnico Inteligente</h4>
                         <p class="text-gray-600">Dominio técnico y la aplicación inteligente de la tecnología para ofrecer soluciones efectivas.</p>
                     </div>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md flex items-start space-x-4">
-                    <i class="fas fa-handshake text-accent-orange text-3xl"></i>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Compromiso y Optimización</h4>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-handshake text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-dark">Compromiso y Optimización</h4>
                         <p class="text-gray-600">Combinamos experiencia, innovación y compromiso para optimizar procesos.</p>
                     </div>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md flex items-start space-x-4">
-                    <i class="fas fa-chart-line text-accent-orange text-3xl"></i>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Resultados Reales</h4>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-chart-line text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-dark">Resultados Reales</h4>
                         <p class="text-gray-600">Maximizar el rendimiento de cada proyecto, enfocados en resultados reales.</p>
                     </div>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md flex items-start space-x-4">
-                    <i class="fas fa-headset text-accent-orange text-3xl"></i>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Atención Personalizada</h4>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-headset text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-dark">Atención Personalizada</h4>
                         <p class="text-gray-600">No dejamos de lado la atención y servicio personalizado que requiere cada proyecto.</p>
                     </div>
-                </div>
-                <!-- New Value Proposition -->
-                <div class="bg-white p-8 rounded-xl shadow-md flex items-start space-x-4">
-                    <i class="fas fa-clock text-accent-orange text-3xl"></i>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Atención a Urgencias</h4>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-clock text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-dark">Atención a Urgencias</h4>
                         <p class="text-gray-600">Disponibilidad para atender situaciones críticas y mantener su operación en marcha.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Solutions Section -->
-    <section id="solutions" class="section-padding bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center text-primary-dark mb-8">Nuestras Soluciones</h2>
+        <!-- Sección Soluciones -->
+        <section id="solutions" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-primary-dark mb-4">Soluciones a tu Medida</h2>
+                <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Explora nuestro portafolio de marcas líderes. Haz clic en un logo para ver cómo sus tecnologías pueden transformar tu operación.</p>
 
-            <!-- Download Catalog Button -->
-            <div class="text-center mb-12">
-                <a href="https://www.dropbox.com/scl/fi/x892m2wt9lki1ipgsukl8/AuFentec-Carta-Presentaci-n-2025.pdf?rlkey=b3mzlr7ykf8l1gnl1gt5bxvdw&st=sdhyg76l&dl=1"
-                   target="_blank"
-                   download="AuFentec-Carta-Presentacion-2025.pdf"
-                   class="inline-flex items-center bg-accent-orange text-white hover:bg-light-orange font-bold py-4 px-10 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-xl">
-                    <i class="fas fa-download mr-3"></i> Descargar Catálogo
-                </a>
+                <!-- Botón de Descarga de Catálogo -->
+                <div class="text-center mb-12">
+                    <a href="https://www.dropbox.com/scl/fi/x892m2wt9lki1ipgsukl8/aufentec_Carta_Presentacion_2025.pdf?rlkey=b3mzlr7ykf8l1gnl1gt5bxvdw&st=rucl3csn&dl=1"
+                       target="_blank"
+                       download="aufentec_Carta_Presentacion_2025.pdf"
+                       class="inline-flex items-center bg-accent-orange text-white hover:bg-light-orange font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-xl">
+                        <i class="fas fa-download mr-3"></i> Descargar Catálogo
+                    </a>
+                </div>
+
+                <div class="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-12 border-y py-6">
+                    <img src="https://www.dropbox.com/scl/fi/tl5wsz7jihzo0kduhwf5i/dobot_logo.png?rlkey=beeftkjmewsfu8cq8jzlschig&st=f351b31b&dl=1" data-brand="dobot" alt="Dobot Logo" class="brand-tab active border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/gh9mn5s6der9xzr5j6xuc/Beckhoff_logo.png?rlkey=ty57dp9dtuuputldyxvysh2rg&st=k37nn9yl&dl=1" data-brand="beckhoff" alt="Beckhoff Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/7p4wgkxxj55wgw2f7ubtl/Phoenix_Contact_Logo.png?rlkey=valsvjg61kpllwoc8x1ag55ni&st=91ncca45&dl=1" data-brand="phoenix" alt="Phoenix Contact Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/bxiwqtnouufunmmx18gt0/logo_siemens.png?rlkey=vpukxxvvr15dpzmervcgf2g3f&st=yzt706k0&dl=1" data-brand="siemens" alt="Siemens Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/we8xo8xlx0bx3ke554tg6/Rittal_Logo.png?rlkey=eh73znoeyigjoas4964iujbsk&st=iem3i76y&dl=1" data-brand="rittal" alt="Rittal Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/1ymtfyrpqf2ad5ntnoppt/logo_pepperl-fuchs.png?rlkey=kf1p62er4gtebyyhyvb9odx2j&st=sfydop00&dl=1" data-brand="pepperl" alt="Pepperl+Fuchs Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/ead8qh41sunse7igfl13r/logo_finder.png?rlkey=ogluzobmkg20p3z73mkm81n04&st=ur64ofyp&dl=1" data-brand="finder" alt="Finder Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/7fe7nyycwvv2nxnwrf9tc/logo_legrand.png?rlkey=a2adohcrtm2pgmmq1ch0rnpli&st=osj5zd9s&dl=1" data-brand="legrand" alt="Legrand Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/zo7qgo7p08h0hj5px6f7f/logo_leviton.png?rlkey=un9ou005omdkohad4ds7263jc&st=nt105ldx&dl=1" data-brand="leviton" alt="Leviton Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/xwh4b80itek9y3jajuzpx/argos_logo.jpg?rlkey=sl8mps9zha7m9u52sb4c9nd1f&st=94uujrt2&dl=1" data-brand="argos" alt="Argos Logo" class="brand-tab border-b-2">
+                    <img src="https://www.dropbox.com/scl/fi/rfybtlxtrwfeb3hjxhm3m/logo_WEG.png?rlkey=twt755u27mu6shkcbsxej52cv&st=kji35gky&dl=1" data-brand="weg" alt="WEG Logo" class="brand-tab border-b-2">
+                </div>
+
+                <div id="solutions-content" class="bg-gray-50 p-8 rounded-lg shadow-inner min-h-[400px]">
+                    <div data-brand-content="dobot" class="brand-content-pane">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Robótica Colaborativa: DOBOT</h3>
+                                <p class="text-gray-600">Pioneros en robótica colaborativa, ofrecemos soluciones compactas y accesibles para manufactura ligera y automatización flexible, combinando precisión y facilidad de uso.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Serie CRA: Carga útil de 3-20 Kg, rápida instalación y seguridad SAFESKIN.</li>
+                                    <li>MG400: Diseño de sobremesa con repetibilidad de 0.05mm.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://www.dropbox.com/scl/fi/6dfx9zw2urlerm17zqgym/dobot_cr_series_working.gif?rlkey=49lyv7r0lyu1r8szflak0ncsn&st=1lkswfz0&dl=1" alt="Robot DOBOT en acción" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="beckhoff" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Control basado en PC: Beckhoff</h3>
+                                <p class="text-gray-600">Especialistas en tecnología de automatización abierta basada en PC. Sus productos incluyen PCs industriales, componentes de E/S, tecnología de accionamiento y el software TwinCAT.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Alto rendimiento para control de máquinas y procesos.</li>
+                                    <li>Plataforma de software integrada para PLC y Motion Control.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://www.dropbox.com/scl/fi/i1iotxrupa4ngkhrow4i4/Beckhoff_ipc.png?rlkey=h61hwhppezbns70gpezx21ue9&st=qickkp6l&dl=1" alt="Componentes Beckhoff" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="phoenix" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Conectividad Industrial: Phoenix Contact</h3>
+                                <p class="text-gray-600">Líderes en componentes y soluciones en ingeniería eléctrica, electrónica y automatización. Ofrecen una gama completa para conectividad y protección de sistemas.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Bornes de conexión y conectores industriales.</li>
+                                    <li>Fuentes de alimentación y protección contra sobretensiones.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://www.dropbox.com/scl/fi/jvcl8jn0nywasl4521t1u/Phoenix_Products.jpg?rlkey=xicyrbyx0jfs1rbd7f0wt8zvw&st=gueyios0&dl=1" alt="Productos Phoenix Contact" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="siemens" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                             <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Automatización y Digitalización: Siemens</h3>
+                                <p class="text-gray-600">Como líder global, Siemens ofrece soluciones robustas que mejoran la eficiencia, confiabilidad y sostenibilidad de la industria a través de su portafolio de automatización y digitalización.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Variadores de frecuencia y arrancadores de motor.</li>
+                                    <li>Controladores lógicos programables (PLC) y sistemas HMI.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://assets.new.siemens.com/siemens/assets/api/uuid:40368841-9755-4f51-91de-84237df32a8f/width:1125/quality:high/simatic-s7-1500-advanced-controller.jpg" alt="Controlador Siemens SIMATIC" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                     <div data-brand-content="rittal" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Infraestructura Industrial: Rittal</h3>
+                                <p class="text-gray-600">Rittal provee soluciones de infraestructura de la más alta calidad, desde gabinetes y sistemas de climatización hasta distribución de energía y soluciones de TI.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Gabinetes compactos y armarios ensamblables.</li>
+                                    <li>Soluciones eficientes de climatización para tableros.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://www.dropbox.com/scl/fi/gbiyzyahu3i4gm1a7lwmj/Rittal_cooler.png?rlkey=6y2im5e581qsx0svgli538uia&st=494ccfx5&dl=1" alt="Climatización Rittal" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="pepperl" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Sensores y Protección: Pepperl+Fuchs</h3>
+                                <p class="text-gray-600">Especialistas en sensórica industrial y protección contra explosiones, desarrollan soluciones a la medida para las aplicaciones más exigentes.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Sensores de proximidad, fotoeléctricos y ultrasónicos.</li>
+                                    <li>Sistemas de identificación como RFID y lectores de códigos.</li>
+                                </ul>
+                            </div>
+                           <div><img src="https://www.dropbox.com/scl/fi/ahtdj1yg2usub151js44r/Pepperl_products.jfif?rlkey=ha3zshd4zduq7thex9sjmtdlm&st=16q56z7a&dl=1" alt="Sensores Pepperl+Fuchs" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="finder" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Relés y Temporizadores: Finder</h3>
+                                <p class="text-gray-600">Finder es un especialista en la fabricación de relés, temporizadores y otros componentes de automatización industrial, ofreciendo soluciones fiables y de alta calidad.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Relés industriales y de estado sólido.</li>
+                                    <li>Interfaces modulares y temporizadores.</li>
+                                    <li>Ventiladores y filtros.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Finder" alt="Productos Finder" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="legrand" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Infraestructura Eléctrica y Digital: Legrand</h3>
+                                <p class="text-gray-600">Legrand es una multinacional francesa líder en infraestructura eléctrica y digital, enfocada en innovación, eficiencia energética y automatización global.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Soluciones para distribución de energía.</li>
+                                    <li>Sistemas de cableado estructurado.</li>
+                                    <li>Equipos para automatización de edificios.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Legrand" alt="Productos Legrand" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="leviton" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Soluciones Eléctricas e Industriales: Leviton</h3>
+                                <p class="text-gray-600">Leviton es una empresa mexicana que distribuye soluciones eléctricas e industriales, reconocida por su calidad, soporte técnico y presencia nacional.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Dispositivos de cableado y soluciones de iluminación.</li>
+                                    <li>Sistemas de gestión de energía.</li>
+                                    <li>Productos para redes de datos.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Leviton" alt="Productos Leviton" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="argos" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Soluciones Eléctricas y de Control: Argos</h3>
+                                <p class="text-gray-600">Argos es una empresa mexicana que distribuye soluciones eléctricas e industriales, reconocida por calidad, soporte técnico y presencia nacional.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Interruptores y Botonería.</li>
+                                    <li>Conductores, Terminales, Rieles DIN y Canaletas.</li>
+                                    <li>Clemas y Accesorios, Clavijas y receptáculos, Cajas Plexo.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Argos" alt="Productos Argos" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div data-brand-content="weg" class="brand-content-pane hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-primary-dark">Motores Eléctricos: WEG</h3>
+                                <p class="text-gray-600">WEG, productor brasileño, ofrece una amplia gama de motores eléctricos trifásicos y monofásicos con diversos armazones (NEMA, IEC) y características especiales como a prueba de explosión o con freno.</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>Motores de uso general y para bombas.</li>
+                                    <li>Motores a prueba de explosión.</li>
+                                    <li>Motores con armazones de aluminio y para motosierra.</li>
+                                </ul>
+                            </div>
+                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+WEG" alt="Productos WEG" class="rounded-lg"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <!-- Intelligent Solution Advisor (Gemini API Integration) -->
-            <div class="bg-blue-50 p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-primary-dark text-center mb-6">Asesor de Soluciones Inteligente ✨</h3>
-                <p class="text-center text-gray-700 mb-6">Describe tu desafío o necesidad industrial y te sugeriremos soluciones de AuFentec.</p>
-                <div class="space-y-4">
+        <!-- Sección Sectores -->
+        <section id="sectors" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-primary-dark mb-12">Sectores que Atendemos</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-truck-loading text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Logística, Distribución y Centros de Empaque</h4>
+                        <p class="text-gray-600 text-sm">Optimizamos la cadena de suministro y procesos de empaque con soluciones de automatización.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-industry text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Manufactura</h4>
+                        <p class="text-gray-600 text-sm">Impulsamos la productividad y eficiencia en procesos de fabricación.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-utensils text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Alimentos y Bebidas</h4>
+                        <p class="text-gray-600 text-sm">Garantizamos la seguridad y optimización en la producción de alimentos y bebidas.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-flask text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Química y Petroquímica</h4>
+                        <p class="text-gray-600 text-sm">Soluciones robustas para entornos exigentes y procesos complejos en la industria química.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-pills text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Farmacéutica y Cosmética</h4>
+                        <p class="text-gray-600 text-sm">Automatización precisa y cumplimiento normativo para la producción farmacéutica y cosmética.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-water text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Tratamiento de Aguas</h4>
+                        <p class="text-gray-600 text-sm">Sistemas de control y automatización para plantas de tratamiento de agua.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-bolt text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Energía y Generación</h4>
+                        <p class="text-gray-600 text-sm">Soluciones para la gestión, generación y eficiencia energética en diversas aplicaciones.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-hard-hat text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Infraestructura y Construcción</h4>
+                        <p class="text-gray-600 text-sm">Tecnología para optimizar proyectos y operaciones en infraestructura y construcción.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <i class="fas fa-seedling text-accent-orange text-3xl mb-3"></i>
+                        <h4 class="font-semibold text-primary-dark">Agroindustria y Alimentos Procesados</h4>
+                        <p class="text-gray-600 text-sm">Automatización para mejorar la productividad y calidad en el sector agroindustrial.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Contacto -->
+        <section id="contact" class="py-20 bg-primary-dark text-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12">Contáctanos</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <!-- Formulario de Contacto -->
                     <div>
-                        <label for="solution-input" class="block text-lg font-medium text-gray-700 mb-2">Tu desafío o necesidad:</label>
-                        <textarea id="solution-input" rows="4" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-orange resize-y" placeholder="Ej: Necesito automatizar el empaquetado de productos frágiles y reducir los tiempos de inactividad."></textarea>
+                        <h3 class="text-2xl font-bold mb-6">Envíanos un mensaje</h3>
+                        <form action="mailto:contacto@aufentec.com" method="post" enctype="text/plain" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-lg font-medium mb-1">Nombre Completo</label>
+                                <input type="text" id="name" name="Nombre" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Tu Nombre" required>
+                            </div>
+                            <div>
+                                <label for="company" class="block text-lg font-medium mb-1">Empresa</label>
+                                <input type="text" id="company" name="Empresa" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Tu Empresa">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-lg font-medium mb-1">Correo Electrónico</label>
+                                <input type="email" id="email" name="Email" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="tu.email@ejemplo.com" required>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-lg font-medium mb-1">Número de Teléfono</label>
+                                <input type="tel" id="phone" name="Telefono" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Ej: +52 123 456 7890">
+                            </div>
+                            <div>
+                                <label for="help-type" class="block text-lg font-medium mb-1">¿Cómo podemos ayudarte?</label>
+                                <select id="help-type" name="Tipo de Ayuda" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-accent-orange">
+                                    <option value="" disabled selected>Selecciona una opción</option>
+                                    <option value="Consulta General">Consulta General</option>
+                                    <option value="Ventas">Ventas</option>
+                                    <option value="Soporte Técnico">Soporte Técnico</option>
+                                    <option value="Cotización de Proyecto">Cotización de Proyecto</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="message" class="block text-lg font-medium mb-1">Mensaje</label>
+                                <textarea id="message" name="Mensaje" rows="5" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                            </div>
+                            <button type="submit" class="w-full md:w-auto bg-accent-orange text-white hover:bg-light-orange font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                                Enviar Mensaje
+                            </button>
+                        </form>
                     </div>
-                    <div class="text-center">
-                        <button id="get-solution-btn" class="bg-primary-dark text-white hover:bg-shadow-grayish-blue font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-                            Obtener Recomendación ✨
-                        </button>
-                    </div>
-                    <div id="solution-output" class="mt-8 p-6 bg-white rounded-xl shadow-md text-gray-800 hidden">
-                        <p class="text-lg font-semibold mb-2">Recomendación de AuFentec:</p>
-                        <div id="solution-text" class="prose max-w-none"></div>
-                        <div id="loading-spinner" class="hidden text-center mt-4">
-                            <i class="fas fa-spinner fa-spin text-primary-dark text-3xl"></i>
-                            <p class="text-primary-dark mt-2">Generando recomendación...</p>
+                    <!-- Información de Contacto -->
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold mb-4">Información de Contacto</h3>
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-envelope text-accent-orange text-2xl"></i>
+                            <div>
+                                <p class="font-semibold">Correo Electrónico:</p>
+                                <a href="mailto:contacto@aufentec.com" class="text-lg hover:underline">contacto@aufentec.com</a>
+                            </div>
                         </div>
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-phone-alt text-accent-orange text-2xl"></i>
+                            <div>
+                                <p class="font-semibold">Teléfono:</p>
+                                <a href="tel:+524779497524" class="text-lg hover:underline">477 949 7524</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-globe text-accent-orange text-2xl"></i>
+                            <div>
+                                <p class="font-semibold">Sitio Web:</p>
+                                <a href="http://www.aufentec.com" target="_blank" class="text-lg hover:underline">www.aufentec.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-map-marker-alt text-accent-orange text-2xl"></i>
+                            <div>
+                                <p class="font-semibold">Ubicación:</p>
+                                <p class="text-lg">León, Gto., México</p>
+                            </div>
+                        </div>
+                        <p class="text-xl font-bold text-center mt-8">Hablemos de tu próximo proyecto</p>
                     </div>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <!-- Collaborative Robotics (DOBOT) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Robótica Colaborativa (DOBOT)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <img src="https://placehold.co/800x500/a3b18a/283618?text=DOBOT+Robots" alt="DOBOT Robots" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>DOBOT se destaca por ser pionero en robótica colaborativa, ofreciendo soluciones compactas y accesibles. Se enfocan en la educación, manufactura ligera y automatización flexible, combinando precisión, facilidad de uso y alta innovación.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Serie CRA:</strong> Carga útil y alcance máx. de 3-20 Kg, 620-1700 mm. Rápida instalación, varias opciones de control, seguridad SAFESKIN, opciones de programación versátiles.</li>
-                            <li><strong>MG400:</strong> Huella de 190x190mm, repetibilidad de 0.05mm, carga útil de 500g, alcance de 440mm. Ofrece múltiples opciones de programación y opera con 100-240 VAC.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- New Section: Industrial Automation (BECKHOFF) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Automatización Industrial (BECKHOFF)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center flex-row-reverse">
-                    <div>
-                        <img src="https://placehold.co/800x500/b0c4de/4682b4?text=BECKHOFF+Automation" alt="BECKHOFF Automation" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>Beckhoff Automation es un especialista en tecnología de automatización abierta basada en PC. La gama de productos incluye PCs industriales, componentes de E/S y de campo, tecnología de accionamiento, software de automatización, así como un sistema de automatización universal e independiente del sector.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Control basado en PC:</strong> Soluciones de alto rendimiento para control de máquinas y procesos.</li>
-                            <li><strong>Tecnología de E/S:</strong> Módulos de E/S para diversas aplicaciones industriales.</li>
-                            <li><strong>Tecnología de Accionamiento:</strong> Servomotores, servodrives y motores lineales para soluciones de movimiento.</li>
-                            <li><strong>Software de Automatización TwinCAT:</strong> Plataforma de software integrada para PLC, Motion Control y robótica.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Industrial Infrastructure (RITTAL) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Infraestructura Industrial (RITTAL)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <img src="https://placehold.co/800x500/d4e4f7/4d607a?text=RITTAL+Infrastructure" alt="RITTAL Infrastructure" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>Rittal ofrece soluciones de infraestructura de alta calidad alemana, incluyendo gabinetes, control de clima, distribución de energía y soluciones de TI, con un soporte integral.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Productos:</strong> Cajas Plásticas, Gabinetes compactos, Armarios ensamblables, Climatización, Accesorios, Brazos de Soporte.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Industrial Automation and Digitalization (SIEMENS) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Automatización y Digitalización Industrial (SIEMENS)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center flex-row-reverse">
-                    <div>
-                        <img src="https://placehold.co/800x500/ccd9e6/3d4a5c?text=SIEMENS+Automation" alt="SIEMENS Automation" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>Siemens, líder global en automatización y digitalización, ofrece soluciones robustas para mejorar la eficiencia, confiabilidad y sostenibilidad en la industria.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Variadores:</strong> G120, G120C, G120X, V20 para control de motores.</li>
-                            <li><strong>Arrancadores:</strong> Tensión plena, tensión reducida, suaves, bancos de capacitores y botoneras.</li>
-                            <li><strong>Protección y Control de Motores:</strong> Guardamotores, contactores, relés bimetálicos, transformadores de control.</li>
-                            <li><strong>SIMATIC:</strong> CPUs, I/Os, ET200, LOGOS, HMIs para control de procesos.</li>
-                            <li><strong>Otros:</strong> Termos, Centros de Carga y Tableros.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- New Section: Industrial Connectivity (PHOENIX CONTACT) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Conectividad Industrial (PHOENIX CONTACT)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <img src="https://placehold.co/800x500/d9e3f0/4a698c?text=PHOENIX+CONTACT" alt="PHOENIX CONTACT" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>Phoenix Contact es un líder en componentes, sistemas y soluciones en el campo de la ingeniería eléctrica, la electrónica y la automatización. Ofrecen una amplia gama de productos para la conectividad y la automatización industrial.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Bornes de Conexión:</strong> Soluciones de conexión para diversas aplicaciones.</li>
-                            <li><strong>Conectores Industriales:</strong> Para señales, datos y potencia en entornos industriales.</li>
-                            <li><strong>Fuentes de Alimentación:</strong> Fiables y eficientes para sistemas de automatización.</li>
-                            <li><strong>Protección contra Sobretensiones:</strong> Para proteger equipos y sistemas.</li>
-                            <li><strong>Relés y Optoacopladores:</strong> Para aislamiento y conmutación de señales.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Industrial Sensors and Intrinsic Protection (PEPPERL+FUCHS) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Sensores Industriales y Protección Intrínseca (PEPPERL+FUCHS)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center flex-row-reverse">
-                    <div>
-                        <img src="https://placehold.co/800x500/e6e6e6/666666?text=PEPPERL+FUCHS+Sensors" alt="PEPPERL+FUCHS Sensors" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>Especialistas en sensórica industrial y protección intrínseca para entornos exigentes y peligrosos.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Tipos de Sensores:</strong> Proximidad, Fotoeléctricos, Ultrasónicos, Sensores de Visión, Soluciones RFID, Encoders, Radar, Sensores LIDAR.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Electrical and Industrial Solutions (FINDER, ARGOS, LEGRAND, LEVITON) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Soluciones Eléctricas e Industriales (FINDER, ARGOS, LEGRAND, LEVITON)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <img src="https://placehold.co/800x500/b0b5c1/475466?text=Electrical+Solutions" alt="Electrical Solutions" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>Trabajamos con marcas líderes como FINDER (relevadores y automatización), ARGOS (distribuidor mexicano), LEGRAND (multinacional francesa), y LEVITON (empresa mexicana) para ofrecer soluciones eléctricas e industriales de la más alta calidad.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>FINDER:</strong> Relés industriales, Relés de estado sólido, Interfaces modulares, Temporizadores, Ventiladores y filtros.</li>
-                            <li><strong>ARGOS:</strong> Interruptores y Botonería, Conductores, Terminales, Rieles DIN y Canaletas, Clemas y Accesorios, Clavijas y receptáculos, Cajas Plexo - Cuadradas y Circulares.</li>
-                            <li><strong>LEGRAND:</strong> Líder en infraestructura eléctrica y digital, enfocado en innovación y eficiencia.</li>
-                            <li><strong>LEVITON:</strong> Reconocida por su calidad y soporte técnico a nivel nacional.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Electric Motors (WEG) -->
-            <div class="bg-white p-8 rounded-xl shadow-lg">
-                <h3 class="text-3xl font-bold text-accent-orange mb-6">Motores Eléctricos (WEG)</h3>
-                <div class="grid md:grid-cols-2 gap-8 items-center flex-row-reverse">
-                    <div>
-                        <img src="https://placehold.co/800x500/9e9e9e/424242?text=WEG+Motors" alt="WEG Motors" class="rounded-lg shadow-md content-image mb-6">
-                    </div>
-                    <div class="space-y-4 text-gray-700 text-lg">
-                        <p>WEG, productor brasileño, ofrece una amplia gama de motores eléctricos trifásicos y monofásicos con diversos armazones (NEMA, IEC) y características especiales como a prueba de explosión o con freno.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Tipos:</strong> Uso general, Contra explosión, Bombas, Aluminio, Motosierra.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sectors Section -->
-    <section id="sectors" class="section-padding bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center text-primary-dark mb-12">Sectores que atendemos</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-truck-loading text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Logística, Distribución y Centros de Empaque</h3>
-                    <p class="text-gray-600">Optimizamos la cadena de suministro y procesos de empaque con soluciones de automatización.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-industry text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Manufactura</h3>
-                    <p class="text-gray-600">Impulsamos la productividad y eficiencia en procesos de fabricación.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-utensils text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Alimentos y Bebidas</h3>
-                    <p class="text-gray-600">Garantizamos la seguridad y optimización en la producción de alimentos y bebidas.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-flask text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Química y Petroquímica</h3>
-                    <p class="text-gray-600">Soluciones robustas para entornos exigentes y procesos complejos en la industria química.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-prescription-bottle-alt text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Farmacéutica y Cosmética</h3>
-                    <p class="text-gray-600">Automatización precisa y cumplimiento normativo para la producción farmacéutica y cosmética.</p>
-                </div>
-                <!-- New Sector: Tratamiento de Aguas -->
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-water text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Tratamiento de Aguas</h3>
-                    <p class="text-gray-600">Sistemas de control y automatización para plantas de tratamiento de agua.</p>
-                </div>
-                <!-- New Sector: Energía y Generación -->
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-bolt text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Energía y Generación</h3>
-                    <p class="text-gray-600">Soluciones para la gestión, generación y eficiencia energética en diversas aplicaciones.</p>
-                </div>
-                <!-- New Sector: Infraestructura y Construcción -->
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-hard-hat text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Infraestructura y Construcción</h3>
-                    <p class="text-gray-600">Tecnología para optimizar proyectos y operaciones en infraestructura y construcción.</p>
-                </div>
-                <!-- New Sector: Agroindustria y Alimentos Procesados -->
-                <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                    <i class="fas fa-seedling text-accent-orange text-4xl mb-4"></i>
-                    <h3 class="text-2xl font-semibold mb-2">Agroindustria y Alimentos Procesados</h3>
-                    <p class="text-gray-600">Automatización para mejorar la productividad y calidad en el sector agroindustrial.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section-padding bg-primary-dark text-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12">Contáctanos</h2>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <!-- Contact Form -->
-                <div>
-                    <h3 class="text-3xl font-bold mb-6">Envíanos un mensaje</h3>
-                    <!-- Form action changed to mailto: -->
-                    <form action="mailto:contacto@aufentec.com" method="post" enctype="text/plain" class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-lg font-medium mb-2">Nombre Completo</label>
-                            <input type="text" id="name" name="Nombre" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Tu Nombre" required>
-                        </div>
-                        <div>
-                            <label for="company" class="block text-lg font-medium mb-2">Empresa</label>
-                            <input type="text" id="company" name="Empresa" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Tu Empresa">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-lg font-medium mb-2">Correo Electrónico</label>
-                            <input type="email" id="email" name="Email" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="tu.email@ejemplo.com" required>
-                        </div>
-                        <div>
-                            <label for="phone" class="block text-lg font-medium mb-2">Número de Teléfono</label>
-                            <input type="tel" id="phone" name="Telefono" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Ej: +52 123 456 7890">
-                        </div>
-                        <div>
-                            <label for="help-type" class="block text-lg font-medium mb-2">¿Cómo podemos ayudarte?</label>
-                            <select id="help-type" name="Tipo de Ayuda" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-accent-orange">
-                                <option value="" disabled selected>Selecciona una opción</option>
-                                <option value="Consulta General">Consulta General</option>
-                                <option value="Ventas">Ventas</option>
-                                <option value="Soporte Técnico">Soporte Técnico</option>
-                                <option value="Cotización de Proyecto">Cotización de Proyecto</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="message" class="block text-lg font-medium mb-2">Mensaje</label>
-                            <textarea id="message" name="Mensaje" rows="5" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                        </div>
-                        <button type="submit" class="w-full md:w-auto bg-accent-orange text-white hover:bg-light-orange font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-                            Enviar Mensaje
-                        </button>
-                        <!-- Removed contact form message and loading spinner as they are not needed for mailto -->
-                    </form>
-                </div>
-                <!-- Contact Information -->
-                <div class="space-y-8">
-                    <h3 class="text-3xl font-bold mb-4">Información de Contacto</h3>
-                    <div class="flex items-center space-x-4">
-                        <i class="fas fa-envelope text-accent-orange text-3xl"></i>
-                        <div>
-                            <p class="text-lg font-semibold">Correo Electrónico:</p>
-                            <a href="mailto:contacto@aufentec.com" class="text-xl hover:underline">contacto@aufentec.com</a>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <i class="fas fa-phone-alt text-accent-orange text-3xl"></i>
-                        <div>
-                            <p class="text-lg font-semibold">Teléfono:</p>
-                            <a href="tel:+524779497524" class="text-xl hover:underline">477 949 7524</a>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <i class="fas fa-globe text-accent-orange text-3xl"></i>
-                        <div>
-                            <p class="text-lg font-semibold">Sitio Web:</p>
-                            <a href="http://www.aufentec.com" target="_blank" class="text-xl hover:underline">www.aufentec.com</a>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <i class="fas fa-map-marker-alt text-accent-orange text-3xl"></i>
-                        <div>
-                            <p class="text-lg font-semibold">Ubicación:</p>
-                            <p class="text-xl">León, Gto., México</p>
-                        </div>
-                    </div>
-                    <!-- Google Map Placeholder -->
-                    <div class="w-full h-64 bg-gray-200 rounded-lg shadow-md overflow-hidden">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3737.585721868453!2d-101.69677358514936!3d21.111877985958567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842baf00f7e411b9%3A0x6b8d9a2e6f4a8e0!2sLe%C3%B3n%2C%20Guanajuato!5e0!3m2!1sen!2smx!4v1678901234567!5m2!1sen!2smx"
-                            width="100%"
-                            height="100%"
-                            style="border:0;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <p class="text-2xl font-bold text-center mt-8">Hablemos de tu próximo proyecto</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-primary-dark text-gray-300 py-10">
+    <!-- Pie de Página -->
+    <footer class="bg-gray-800 text-gray-400 py-8">
         <div class="container mx-auto px-6 text-center">
-            <div class="mb-6">
-                <a href="#home" class="flex items-center justify-center mb-4">
-                    <img src="https://i.ibb.co/Ldt730pc/Aufentec-Logotipo-H-Fondo-Obscuro.png" alt="Aufentec-Logotipo-H-Fondo-Obscuro" class="footer-logo">
-                </a>
-                <p class="text-sm">Innovación que avanza contigo</p>
-            </div>
-            <div class="flex flex-wrap justify-center space-x-6 mb-6">
-                <a href="#home" class="hover:text-accent-orange transition-colors duration-300">Inicio</a>
-                <a href="#about" class="hover:text-accent-orange transition-colors duration-300">NOSOTROS</a>
-                <a href="#solutions" class="hover:text-accent-orange transition-colors duration-300">Soluciones</a>
-                <a href="#sectors" class="hover:text-accent-orange transition-colors duration-300">Sectores</a>
-                <a href="#contact" class="hover:text-accent-orange transition-colors duration-300">Contacto</a>
-            </div>
-            <div class="text-sm mb-4">
-                <p>&copy; 2025 AuFentec. Todos los derechos reservados.</p>
-                <p>
-                    <a href="#" download="Aviso-de-Privacidad-AuFentec.pdf" class="hover:underline">Aviso de privacidad</a> |
-                    <a href="#" download="Terminos-de-Servicio-AuFentec.pdf" class="hover:underline">Términos de Servicio</a>
-                </p>
-            </div>
-            <!-- Social Media Icons (placeholders) -->
-            <div class="flex justify-center space-x-6">
-                <a href="#" class="text-gray-400 hover:text-accent-orange text-2xl transition-colors duration-300"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="text-gray-400 hover:text-accent-orange text-2xl transition-colors duration-300"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-accent-orange text-2xl transition-colors duration-300"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="text-gray-400 hover:text-accent-orange text-2xl transition-colors duration-300"><i class="fab fa-instagram"></i></a>
-            </div>
+             <div class="flex justify-center mb-4">
+                <a href="https://www.linkedin.com/company/aufentec/about/" target="_blank" class="mx-2 hover:text-accent-orange transition-colors"><i class="fab fa-linkedin text-2xl"></i></a>
+             </div>
+            <p>&copy; 2025 <b>aufentec</b>. Todos los derechos reservados.</p>
+            <p class="text-sm mt-2">
+                <a href="#" class="hover:underline">Aviso de Privacidad</a> | <a href="#" class="hover:underline">Términos de Servicio</a>
+            </p>
+            <a href="#home" class="flex items-center justify-center mt-4">
+                <img src="https://www.dropbox.com/scl/fi/ji83wcf036ilyapxyvwjv/Aufentec_Logotipo_Fondo_Obscuro.png?rlkey=zjkusxtckla7olb9qmnmaif70&st=h5p3f94t&dl=1" alt="aufentec logo oscuro" class="footer-logo">
+            </a>
         </div>
     </footer>
 
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                // Close mobile menu if open
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navegación del menú móvil
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
             });
-        });
 
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+            // Lógica para las pestañas de soluciones
+            const brandTabs = document.querySelectorAll('.brand-tab');
+            const brandContentPanes = document.querySelectorAll('.brand-content-pane');
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+            brandTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const brand = tab.dataset.brand;
 
-        // Close mobile menu when clicking outside (optional, more advanced)
-        document.addEventListener('click', (event) => {
-            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                }
-            }
-        });
+                    brandTabs.forEach(item => item.classList.remove('active'));
+                    tab.classList.add('active');
 
-        // Gemini API Integration for Solution Advisor
-        const solutionInput = document.getElementById('solution-input');
-        const getSolutionBtn = document.getElementById('get-solution-btn');
-        const solutionOutput = document.getElementById('solution-output');
-        const solutionText = document.getElementById('solution-text');
-        const loadingSpinner = document.getElementById('loading-spinner');
-
-        getSolutionBtn.addEventListener('click', async () => {
-            const userProblem = solutionInput.value.trim();
-
-            if (userProblem === "") {
-                solutionText.innerHTML = '<p class="text-red-500">Por favor, describe tu desafío o necesidad para obtener una recomendación.</p>';
-                solutionOutput.classList.remove('hidden');
-                return;
-            }
-
-            // Show loading spinner and hide previous output
-            solutionOutput.classList.remove('hidden');
-            solutionText.innerHTML = ''; // Clear previous text
-            loadingSpinner.classList.remove('hidden');
-            getSolutionBtn.disabled = true; // Disable button during processing
-
-            const prompt = `Eres un experto en automatización industrial y soluciones tecnológicas para AuFentec. Basándote en la siguiente descripción de un cliente, proporciona una recomendación preliminar de soluciones de AuFentec que podrían ser relevantes. Menciona las marcas o categorías de productos de AuFentec que encajan (DOBOT, BECKHOFF, RITTAL, SIEMENS, PHOENIX CONTACT, PEPPERL+FUCHS, FINDER, ARGOS, LEGRAND, LEVITON, WEG) y explica brevemente por qué. Mantén la respuesta concisa y orientada a la solución.
-
-Descripción del cliente:
-${userProblem}`;
-
-            try {
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                const payload = { contents: chatHistory };
-                const apiKey = ""; // Canvas will automatically provide this in runtime
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    brandContentPanes.forEach(pane => {
+                        if (pane.dataset.brandContent === brand) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
                 });
+            });
 
-                const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    solutionText.innerHTML = text.replace(/\n/g, '<br>'); // Display newlines as breaks
-                } else {
-                    solutionText.innerHTML = '<p class="text-red-500">Lo sentimos, no pudimos generar una recomendación en este momento. Por favor, inténtalo de nuevo.</p>';
-                }
-            } catch (error) {
-                console.error('Error calling Gemini API:', error);
-                solutionText.innerHTML = '<p class="text-red-500">Ocurrió un error al conectar con el servicio de IA. Por favor, verifica tu conexión o inténtalo más tarde.</p>';
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                getSolutionBtn.disabled = false; // Re-enable button
-            }
+            // Desplazamiento suave
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
         });
     </script>
 </body>
