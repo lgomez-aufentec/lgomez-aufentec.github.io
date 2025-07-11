@@ -1,0 +1,55 @@
+/* Custom Styles for aufentec Website */
+
+body {
+    font-family: 'Public Sans', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* Navigation Links */
+.nav-link {
+    transition: color 0.3s ease;
+}
+.nav-link:hover {
+    color: #f18d29; /* Accent Orange */
+}
+
+/* Brand Tabs in Solutions Section */
+.brand-tab {
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    cursor: pointer;
+    height: 36px; /* Reduced base height for uniformity on mobile */
+    width: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure image fits within bounds */
+}
+.brand-tab:hover {
+    filter: grayscale(50%);
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+.brand-tab.active {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.1);
+    border-color: #f18d29; /* Highlight active tab with accent orange */
+}
+
+/* Responsive adjustments for brand tabs */
+@media (min-width: 768px) {
+    .brand-tab {
+        height: 48px; /* Reduced larger height on desktop */
+    }
+}
+
+/* Header Logo Styling */
+.header-logo {
+    height: 96px; /* Increased size for prominence */
+    width: auto;
+}
+
+/* Footer Logo Styling */
+.footer-logo {
+    max-height: 180px; /* Increased size for prominence */
+    width: auto;
+}
