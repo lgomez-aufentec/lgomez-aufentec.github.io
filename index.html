@@ -3,7 +3,7 @@
 <head>
     <!-- Chosen Palette: aufentec Custom (Dark Blue & Orange) -->
     <!-- Application Structure Plan: The SPA uses a single-page, vertical scroll layout with a fixed navigation header for intuitive, linear storytelling. Key sections are: 1) A dynamic Hero with a video background for a strong first impression. 2) A 'Nosotros' section with a grid for scannable value propositions. 3) The core 'Soluciones' section, designed as an interactive tabbed interface where users click a brand logo to reveal detailed information, preventing overwhelming scrolling and allowing focused exploration. 4) A 'Sectores' section using a card-based grid for visual clarity. 5) A final 'Contacto' section. This structure was chosen to guide the user from brand introduction to detailed solutions and finally to a call-to-action, with the tabbed interface being the key to making the dense product information manageable and engaging. -->
-    <!-- Visualization & Content Choices: - **Hero:** Video background (HTML <video>) to convey a modern, dynamic feel. - **Value Proposition & Sectors:** Card grids with icons (HTML/CSS/Font Awesome) to visually break down lists into digestible, scannable blocks. - **Solutions/Brands:** An interactive tabbed system (Vanilla JS DOM manipulation). When a user clicks a brand logo to reveal the corresponding content `div` is displayed while others are hidden. This is the optimal method for presenting a large catalog of distinct partners without a long, unusable page, promoting user interaction and discovery. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- Visualization & Content Choices: - **Hero:** Video background (HTML <video>) to convey a modern, dynamic feel. - **Value Proposition & Sectors:** Card grids with icons (HTML/CSS/Font Awesome) to visually break down lists into digestible, scannable blocks. - **Solutions/Brands:** An interactive tabbed system (Vanilla JS DOM manipulation). When a user clicks a brand logo to reveal detailed information, preventing overwhelming scrolling and allowing focused exploration. 4) A 'Sectores' section using a card-based grid for visual clarity. 5) A final 'Contacto' section. This structure was chosen to guide the user from brand introduction to detailed solutions and finally to a call-to-action, with the tabbed interface being the key to making the dense product information manageable and engaging. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <meta charset="UTF-8">
@@ -37,7 +37,7 @@
             filter: grayscale(100%);
             opacity: 0.6;
             cursor: pointer;
-            height: 48px; /* Base height for uniformity on mobile */
+            height: 36px; /* Reduced base height for uniformity on mobile */
             width: auto; /* Maintain aspect ratio */
             object-fit: contain; /* Ensure image fits within bounds */
         }
@@ -55,7 +55,7 @@
         /* Responsive adjustments for brand tabs */
         @media (min-width: 768px) {
             .brand-tab {
-                height: 64px; /* Larger height on desktop */
+                height: 48px; /* Reduced larger height on desktop */
             }
         }
 
@@ -216,7 +216,7 @@
                                     <li>Plataforma de software integrada para PLC y Motion Control.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://www.dropbox.com/scl/fi/i1iotxrupa4ngkhrow4i4/Beckhoff_ipc.png?rlkey=h61hwhppezbns70gpezx21ue9&st=qickkp6l&dl=1" alt="Componentes Beckhoff" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/e20nq4naakr02a74d3u40/Beckhoff_component-overview.jpg?rlkey=dnw57y6g48tlyvhtcfz6t3eyl&st=w7tbabto&dl=1" alt="Componentes Beckhoff" class="rounded-lg"></div>
                         </div>
                     </div>
                     <div data-brand-content="phoenix" class="brand-content-pane hidden">
@@ -229,7 +229,7 @@
                                     <li>Fuentes de alimentación y protección contra sobretensiones.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://www.dropbox.com/scl/fi/jvcl8jn0nywasl4521t1u/Phoenix_Products.jpg?rlkey=xicyrbyx0jfs1rbd7f0wt8zvw&st=gueyios0&dl=1" alt="Productos Phoenix Contact" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/u18eahcdjqcedxd71sz3n/Phoenix_Products.jpg?rlkey=i9diehee5fctoej7jxyopfl6l&st=q2o6zhpe&dl=1" alt="Productos Phoenix Contact" class="rounded-lg"></div>
                         </div>
                     </div>
                     <div data-brand-content="siemens" class="brand-content-pane hidden">
@@ -242,7 +242,7 @@
                                     <li>Controladores lógicos programables (PLC) y sistemas HMI.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://assets.new.siemens.com/siemens/assets/api/uuid:40368841-9755-4f51-91de-84237df32a8f/width:1125/quality:high/simatic-s7-1500-advanced-controller.jpg" alt="Controlador Siemens SIMATIC" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/i26a8bfvdqq9t2a8j012o/siemens_productos.jpg?rlkey=gcwassubysgztcp7r16p8ylx5&st=oylsq50n&dl=1" alt="Controlador Siemens SIMATIC" class="rounded-lg"></div>
                         </div>
                     </div>
                      <div data-brand-content="rittal" class="brand-content-pane hidden">
@@ -268,7 +268,7 @@
                                     <li>Sistemas de identificación como RFID y lectores de códigos.</li>
                                 </ul>
                             </div>
-                           <div><img src="https://www.dropbox.com/scl/fi/ahtdj1yg2usub151js44r/Pepperl_products.jfif?rlkey=ha3zshd4zduq7thex9sjmtdlm&st=16q56z7a&dl=1" alt="Sensores Pepperl+Fuchs" class="rounded-lg"></div>
+                           <div><img src="https://www.dropbox.com/scl/fi/bd35n6ococarrmcklp83l/pepperl_products.jpg?rlkey=52gqvexjygxt3qejvgolc8bns&st=etkd4x95&dl=1" alt="Sensores Pepperl+Fuchs" class="rounded-lg"></div>
                         </div>
                     </div>
                     <div data-brand-content="finder" class="brand-content-pane hidden">
@@ -282,7 +282,7 @@
                                     <li>Ventiladores y filtros.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Finder" alt="Productos Finder" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/qvn8qak8anvlr5xbn0xqe/finder_products.jpg?rlkey=6r206sc3tazfol2xl2xc2rdt2&st=2jy2bmc1&dl=1" alt="Productos Finder" class="rounded-lg"></div>
                         </div>
                     </div>
                     <div data-brand-content="legrand" class="brand-content-pane hidden">
@@ -296,7 +296,7 @@
                                     <li>Equipos para automatización de edificios.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Legrand" alt="Productos Legrand" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/7eapuod3tlrx7eppgjayl/legrand_products.png?rlkey=x8np6jfsqc8pdbl2fg9box6b0&st=yt5rrbyv&dl=1" alt="Productos Legrand" class="rounded-lg"></div>
                         </div>
                     </div>
                     <div data-brand-content="leviton" class="brand-content-pane hidden">
@@ -310,7 +310,7 @@
                                     <li>Productos para redes de datos.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Leviton" alt="Productos Leviton" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/2dc0bb7x84c7wai2qra9w/Leviton_products.jpg?rlkey=2e7pfmk3ls8s4n196r2xnzgna&st=efqg6khq&dl=1" alt="Productos Leviton" class="rounded-lg"></div>
                         </div>
                     </div>
                     <div data-brand-content="argos" class="brand-content-pane hidden">
@@ -324,7 +324,7 @@
                                     <li>Clemas y Accesorios, Clavijas y receptáculos, Cajas Plexo.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+Argos" alt="Productos Argos" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/581webjq6t30991rdheks/Argos_Products.png?rlkey=vwbh88li6n23lz7h5abhp32jb&st=mv95y2oh&dl=1" alt="Productos Argos" class="rounded-lg"></div>
                         </div>
                     </div>
                     <div data-brand-content="weg" class="brand-content-pane hidden">
@@ -338,7 +338,7 @@
                                     <li>Motores con armazones de aluminio y para motosierra.</li>
                                 </ul>
                             </div>
-                            <div><img src="https://placehold.co/400x250/b0b5c1/475466?text=Productos+WEG" alt="Productos WEG" class="rounded-lg"></div>
+                            <div><img src="https://www.dropbox.com/scl/fi/bcubbw6wklg7ddjpwtpdx/weg_productos.jpg?rlkey=c2lvpyvjbbxef54nqigyk61z1&st=x2gj7o9c&dl=1" alt="Productos WEG" class="rounded-lg"></div>
                         </div>
                     </div>
                 </div>
@@ -386,11 +386,6 @@
                         <p class="text-gray-600 text-sm">Soluciones para la gestión, generación y eficiencia energética en diversas aplicaciones.</p>
                     </div>
                      <div class="bg-white p-6 rounded-lg shadow-md">
-                        <i class="fas fa-hard-hat text-accent-orange text-3xl mb-3"></i>
-                        <h4 class="font-semibold text-primary-dark">Infraestructura y Construcción</h4>
-                        <p class="text-gray-600 text-sm">Tecnología para optimizar proyectos y operaciones en infraestructura y construcción.</p>
-                    </div>
-                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <i class="fas fa-seedling text-accent-orange text-3xl mb-3"></i>
                         <h4 class="font-semibold text-primary-dark">Agroindustria y Alimentos Procesados</h4>
                         <p class="text-gray-600 text-sm">Automatización para mejorar la productividad y calidad en el sector agroindustrial.</p>
@@ -407,26 +402,26 @@
                     <!-- Formulario de Contacto -->
                     <div>
                         <h3 class="text-2xl font-bold mb-6">Envíanos un mensaje</h3>
-                        <form action="mailto:contacto@aufentec.com" method="post" enctype="text/plain" class="space-y-4">
+                        <form id="contact-form" action="https://formspree.io/f/mzzgnvvg" method="POST" class="space-y-4">
                             <div>
                                 <label for="name" class="block text-lg font-medium mb-1">Nombre Completo</label>
-                                <input type="text" id="name" name="Nombre" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Tu Nombre" required>
+                                <input type="text" id="name" name="Nombre" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange text-accent-orange" placeholder="Tu Nombre" required>
                             </div>
                             <div>
                                 <label for="company" class="block text-lg font-medium mb-1">Empresa</label>
-                                <input type="text" id="company" name="Empresa" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Tu Empresa">
+                                <input type="text" id="company" name="Empresa" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange text-accent-orange" placeholder="Tu Empresa">
                             </div>
                             <div>
                                 <label for="email" class="block text-lg font-medium mb-1">Correo Electrónico</label>
-                                <input type="email" id="email" name="Email" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="tu.email@ejemplo.com" required>
+                                <input type="email" id="email" name="Email" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange text-accent-orange" placeholder="tu.email@ejemplo.com" required>
                             </div>
                             <div>
                                 <label for="phone" class="block text-lg font-medium mb-1">Número de Teléfono</label>
-                                <input type="tel" id="phone" name="Telefono" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Ej: +52 123 456 7890">
+                                <input type="tel" id="phone" name="Telefono" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange text-accent-orange" placeholder="Ej: +52 123 456 7890">
                             </div>
                             <div>
                                 <label for="help-type" class="block text-lg font-medium mb-1">¿Cómo podemos ayudarte?</label>
-                                <select id="help-type" name="Tipo de Ayuda" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-accent-orange">
+                                <select id="help-type" name="Tipo de Ayuda" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-accent-orange text-accent-orange">
                                     <option value="" disabled selected>Selecciona una opción</option>
                                     <option value="Consulta General">Consulta General</option>
                                     <option value="Ventas">Ventas</option>
@@ -436,12 +431,13 @@
                             </div>
                             <div>
                                 <label for="message" class="block text-lg font-medium mb-1">Mensaje</label>
-                                <textarea id="message" name="Mensaje" rows="5" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                                <textarea id="message" name="Mensaje" rows="5" class="w-full p-3 rounded-md bg-white bg-opacity-20 border border-white bg-opacity-30 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-orange text-accent-orange" placeholder="Escribe tu mensaje aquí..." required></textarea>
                             </div>
                             <button type="submit" class="w-full md:w-auto bg-accent-orange text-white hover:bg-light-orange font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
                                 Enviar Mensaje
                             </button>
                         </form>
+                        <div id="form-messages" class="mt-4 text-center text-lg font-semibold"></div>
                     </div>
                     <!-- Información de Contacto -->
                     <div class="space-y-6">
@@ -475,6 +471,20 @@
                             </div>
                         </div>
                         <p class="text-xl font-bold text-center mt-8">Hablemos de tu próximo proyecto</p>
+                        <!-- Google Maps Embed -->
+                        <div class="mt-8">
+                            <h3 class="text-2xl font-bold mb-4 text-center">Encuéntranos en el mapa</h3>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d119290.7107775537!2d-101.80004381640624!3d21.163351999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842bbf062f689e47%3A0x1d47159787e912b7!2sLe%C3%B3n%2C%20Gto.%2C%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1700000000000!5m2!1ses-419!2smx"
+                                width="100%"
+                                height="300"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                class="rounded-lg shadow-lg"
+                            ></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -538,6 +548,45 @@
                          mobileMenu.classList.add('hidden');
                     }
                 });
+            });
+
+            // Lógica de envío de formulario con Formspree
+            const form = document.getElementById('contact-form');
+            const formMessages = document.getElementById('form-messages');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Evita el envío tradicional del formulario
+
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        formMessages.textContent = 'Mensaje enviado, un asesor se contactara lo antes posible contigo'; // Updated success message
+                        formMessages.classList.remove('text-red-500');
+                        formMessages.classList.add('text-green-600');
+                        form.reset(); // Limpia el formulario
+                    } else {
+                        const data = await response.json();
+                        if (data.errors) {
+                            formMessages.textContent = data.errors.map(error => error.message).join(', ');
+                        } else {
+                            formMessages.textContent = '¡Oops! Hubo un problema al enviar tu mensaje.';
+                        }
+                        formMessages.classList.remove('text-green-600');
+                        formMessages.classList.add('text-red-500');
+                    }
+                } catch (error) {
+                    formMessages.textContent = 'Hubo un error de conexión. Por favor, inténtalo de nuevo más tarde.';
+                    formMessages.classList.remove('text-green-600');
+                    formMessages.classList.add('text-red-500');
+                }
             });
         });
     </script>
