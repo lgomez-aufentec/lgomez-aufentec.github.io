@@ -3,7 +3,7 @@
 <head>
     <!-- Chosen Palette: aufentec Custom (Dark Blue & Orange) -->
     <!-- Application Structure Plan: The SPA uses a single-page, vertical scroll layout with a fixed navigation header for intuitive, linear storytelling. Key sections are: 1) A dynamic Hero with a video background for a strong first impression. 2) A 'Nosotros' section with a grid for scannable value propositions. 3) The core 'Soluciones' section, designed as an interactive tabbed interface where users click a brand logo to reveal detailed information, preventing overwhelming scrolling and allowing focused exploration. 4) A 'Sectores' section using a card-based grid for visual clarity. 5) A final 'Contacto' section. This structure was chosen to guide the user from brand introduction to detailed solutions and finally to a call-to-action, with the tabbed interface being the key to making the dense product information manageable and engaging. -->
-    <!-- Visualization & Content Choices: - **Hero:** Video background (HTML <video>) to convey a modern, dynamic feel. - **Value Proposition & Sectors:** Card grids with icons (HTML/CSS/Font Awesome) to visually break down lists into digestible, scannable blocks. - **Solutions/Brands:** An interactive tabbed system (Vanilla JS DOM manipulation). When a user clicks a brand logo to reveal detailed information, preventing overwhelming scrolling and allowing focused exploration. 4) A 'Sectores' section using a card-based grid for visual clarity. 5) A final 'Contacto' section. This structure was chosen to guide the user from brand introduction to detailed solutions and finally to a call-to-action, with the tabbed interface being the key to making the dense product information manageable and engaging. -->
+    <!-- Visualization & Content Choices: - **Hero:** Video background (HTML <video>) to convey a modern, dynamic feel. - **Value Proposition & Sectors:** Card grids with icons (HTML/CSS/Font Awesome) to visually break down lists into digestible, scannable blocks. - **Solutions/Brands:** An interactive tabbed system (Vanilla JS DOM manipulation). When a user clicks a brand logo to reveal the corresponding content `div` is displayed while others are hidden. This is the optimal method for presenting a large catalog of distinct partners without a long, unusable page, promoting user interaction and discovery. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <meta charset="UTF-8">
@@ -11,11 +11,86 @@
     <title>aufentec | Innovación que avanza contigo</title>
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/logos/logo_aufentec_icono.ico">
+    
+    <!-- Tailwind CSS CDN - MUST BE LOADED BEFORE tailwind.config -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind CSS Configuration for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#152c47',
+                        'accent-orange': '#f18d29',
+                        'light-orange': '#FDBE87',
+                    }
+                }
+            }
+        }
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Custom Stylesheet (consolidated from style.css) -->
+    <style>
+        /* Custom Styles for aufentec Website */
+
+        body {
+            font-family: 'Public Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #f18d29; /* Accent Orange */
+        }
+
+        /* Brand Tabs in Solutions Section */
+        .brand-tab {
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            cursor: pointer;
+            height: 36px; /* Reduced base height for uniformity on mobile */
+            width: auto; /* Maintain aspect ratio */
+            object-fit: contain; /* Ensure image fits within bounds */
+        }
+        .brand-tab:hover {
+            filter: grayscale(50%);
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+        .brand-tab.active {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+            border-color: #f18d29; /* Highlight active tab with accent orange */
+        }
+
+        /* Responsive adjustments for brand tabs */
+        @media (min-width: 768px) {
+            .brand-tab {
+                height: 48px; /* Reduced larger height on desktop */
+            }
+        }
+
+        /* Header Logo Styling */
+        .header-logo {
+            height: 96px; /* Increased size for prominence */
+            width: auto;
+        }
+
+        /* Footer Logo Styling */
+        .footer-logo {
+            max-height: 180px; /* Increased size for prominence */
+            width: auto;
+        }
+    </style>
 </head>
 <body class="bg-white text-gray-800">
 
@@ -458,7 +533,90 @@
         </div>
     </footer>
 
-    <!-- Custom JavaScript -->
-    <script src="js/script.js" defer></script>
+    <!-- Custom JavaScript (consolidated from script.js) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu navigation
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Logic for solution tabs
+            const brandTabs = document.querySelectorAll('.brand-tab');
+            const brandContentPanes = document.querySelectorAll('.brand-content-pane');
+
+            brandTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const brand = tab.dataset.brand;
+
+                    brandTabs.forEach(item => item.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    brandContentPanes.forEach(pane => {
+                        if (pane.dataset.brandContent === brand) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    // Close mobile menu after clicking a link
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Form submission logic with Formspree
+            const form = document.getElementById('contact-form');
+            const formMessages = document.getElementById('form-messages');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        formMessages.textContent = 'Mensaje enviado, un asesor se contactara lo antes posible contigo'; // Success message
+                        formMessages.classList.remove('text-red-500');
+                        formMessages.classList.add('text-green-600');
+                        form.reset(); // Clear the form
+                    } else {
+                        const data = await response.json();
+                        if (data.errors) {
+                            formMessages.textContent = data.errors.map(error => error.message).join(', ');
+                        } else {
+                            formMessages.textContent = '¡Oops! Hubo un problema al enviar tu mensaje.';
+                        }
+                        formMessages.classList.remove('text-green-600');
+                        formMessages.classList.add('text-red-500');
+                    }
+                } catch (error) {
+                    formMessages.textContent = 'Hubo un error de conexión. Por favor, inténtalo de nuevo más tarde.';
+                    formMessages.classList.remove('text-green-600');
+                    formMessages.classList.add('text-red-500');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
