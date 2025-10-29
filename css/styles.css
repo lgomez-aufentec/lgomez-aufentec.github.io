@@ -53,3 +53,13 @@ body {
     max-height: 180px; /* Increased size for prominence */
     width: auto;
 }
+
+/* Solución para imágenes de producto grandes */
+.brand-content-pane img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsionarse */
+    max-height: 300px; /* Límite de altura opcional para uniformidad */
+    border-radius: 0.5rem; /* Coincide con la clase 'rounded-lg' de Tailwind */
+}
+
